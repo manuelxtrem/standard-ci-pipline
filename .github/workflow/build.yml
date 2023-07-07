@@ -1,0 +1,24 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+# lint 
+# build
+# tag
+# push
+
+      - name: Setup Credentials
+        env:
+        run: .github/scripts/keys_setup.sh
