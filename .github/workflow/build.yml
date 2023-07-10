@@ -14,11 +14,28 @@ jobs:
         with:
           fetch-depth: 0
 
-# lint 
-# build
-# tag
-# push
+      - name: Setup
+        run: |
+          cd ~
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
 
-      - name: Setup Credentials
+      - name: Lint Test
+        working-directory: ./app
+        run: npm run lint
+
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/node-app .
+
+      - name: Tag Docker Image
+        run: docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/node-app ${{ secrets.DOCKER_HUB_USERNAME }}/node-app:latest
+      
+      - name: Push Docker Image
         env:
-        run: .github/scripts/keys_setup.sh
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          AWS_ACCESS_ID: ${{ secrets.AWS_ACCESS_ID }}
+          AWS_ACCESS_SECRET: ${{ secrets.AWS_ACCESS_SECRET }}
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.DOCKER_HUB_USERNAME }}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/node-app:latest
