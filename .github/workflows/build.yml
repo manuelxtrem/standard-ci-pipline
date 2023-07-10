@@ -18,6 +18,7 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v3
         with:
+          token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
 
       - name: Configure AWS credentials
@@ -75,11 +76,3 @@ jobs:
           git add helm/node-app/values.yaml
           git commit -m "Update values.yaml with new image tag"
           git push origin main
-
-
-      - name: Push values changes to repo
-        uses: actions/github-push@v2
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          ref: main
-          workflow_run_id: ${{ github.run_id }}
