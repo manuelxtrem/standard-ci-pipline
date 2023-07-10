@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'helm/**/values.yaml'
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -59,7 +61,7 @@ jobs:
           sed -i "s/tag:.*/tag: $IMAGE_TAG/g" helm/node-app/values.yaml
 
           # Check that the tag has been updated
-          if [[ $(cat helm/node-app/values.yaml | grep $IMAGE_TAG) == "$IMAGE_TAG" ]]; then
+          if [[ $(cat helm/node-app/values.yaml | grep "$IMAGE_TAG") == "$IMAGE_TAG" ]]; then
             echo "Tag updated successfully"
           else
             echo "Tag update failed"
@@ -73,3 +75,11 @@ jobs:
           git add helm/node-app/values.yaml
           git commit -m "Update values.yaml with new image tag"
           git push origin main
+
+
+      - name: Push values changes to repo
+        uses: actions/github-push@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          ref: main
+          workflow_run_id: ${{ github.run_id }}
