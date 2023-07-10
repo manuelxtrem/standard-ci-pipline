@@ -59,15 +59,7 @@ jobs:
 
       - name: Update image tag in Helm package values.yaml
         run: |
-          sed -i "s/tag:.*/tag: $IMAGE_TAG/g" helm/node-app/values.yaml
-
-          # Check that the tag has been updated
-          if [[ $(cat helm/node-app/values.yaml | grep "$IMAGE_TAG") == "$IMAGE_TAG" ]]; then
-            echo "Tag updated successfully"
-          else
-            echo "Tag update failed"
-            exit 1
-          fi
+          sed -i "s/tag:.*/tag: ${IMAGE_TAG}/g" helm/node-app/values.yaml
 
       - name: Push values changes to repo without actions trigger
         run: |

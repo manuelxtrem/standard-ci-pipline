@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: 419378641383.dkr.ecr.us-east-1.amazonaws.com/node-app
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: latest
 
 imagePullSecrets: []
 nameOverride: ""
