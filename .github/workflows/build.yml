@@ -37,5 +37,5 @@ jobs:
       
       - name: Push Docker Image
         run: |
-          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ DOCKER_HUB_USERNAME }}
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.DOCKER_HUB_USERNAME }}
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/node-app:latest
