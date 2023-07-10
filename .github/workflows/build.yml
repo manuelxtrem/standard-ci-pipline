@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  AWS_REGION: ${{ env.AWS_REGION }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
   ECR_REPOSITORY: node-app
   
 jobs:
