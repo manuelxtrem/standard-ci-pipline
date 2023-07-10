@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  main:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repository
@@ -28,7 +28,7 @@ jobs:
 
       - name: Lint Test
         working-directory: ./app
-        run: npm run lint
+        run: npm i -g eslint && npm run lint
 
       - name: Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/node-app .
