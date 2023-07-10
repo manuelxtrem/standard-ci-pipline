@@ -14,12 +14,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup
-        run: |
-          cd ~
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Lint Test
         working-directory: ./app
@@ -37,5 +41,5 @@ jobs:
           AWS_ACCESS_ID: ${{ secrets.AWS_ACCESS_ID }}
           AWS_ACCESS_SECRET: ${{ secrets.AWS_ACCESS_SECRET }}
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.DOCKER_HUB_USERNAME }}
+          docker login --username AWS --password-stdin ${{ secrets.DOCKER_HUB_USERNAME }}
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/node-app:latest
