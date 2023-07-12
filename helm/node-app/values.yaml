@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: 419378641383.dkr.ecr.us-east-1.amazonaws.com/node-app
   pullPolicy: IfNotPresent
-  tag: 1160cdfb884b535beb28542d66fec50818b1ebd8
+  tag:$IMAGE_TAG
 
 imagePullSecrets: []
 nameOverride: ""
